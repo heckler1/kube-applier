@@ -57,9 +57,9 @@ func main() {
 	}
 	kubeClient.Configure()
 
-	gitUtil := &git.GitUtil{repoPath}
+	gitUtil := &git.GitUtil{RepoPath: repoPath}
 	fileSystem := &sysutil.FileSystem{}
-	listFactory := &applylist.Factory{repoPath, blacklistPath, whitelistPath, fileSystem}
+	listFactory := &applylist.Factory{RepoPath: repoPath, BlacklistPath: blacklistPath, WhitelistPath: whitelistPath, FileSystem: fileSystem}
 
 	// Webserver and scheduler send run requests to FullRunQueue channel.
 	// Runner receives the requests and initiates full runs.
@@ -91,27 +91,27 @@ func main() {
 
 	metrics := &metrics.Prometheus{RunMetrics: runMetrics}
 	metrics.Configure()
-	batchApplier := &run.BatchApplier{kubeClient}
+	batchApplier := &run.BatchApplier{KubeClient: kubeClient}
 
 	pollTicker := time.Tick(pollInterval)
 	fullRunTicker := time.Tick(fullRunInterval)
 
 	runner := &run.Runner{
-		batchApplier,
-		listFactory,
-		gitUtil,
-		clock,
-		diffURLFormat,
-		"",
-		quickRunQueue,
-		fullRunQueue,
-		runResults,
-		runMetrics,
-		errors,
-		runCount,
+		BatchApplier:  batchApplier,
+		ListFactory:   listFactory,
+		GitUtil:       gitUtil,
+		Clock:         clock,
+		DiffURLFormat: diffURLFormat,
+		LastHash:      "",
+		QuickRunQueue: quickRunQueue,
+		FullRunQueue:  fullRunQueue,
+		RunResults:    runResults,
+		RunMetrics:    runMetrics,
+		Errors:        errors,
+		RunCount:      runCount,
 	}
-	scheduler := &run.Scheduler{gitUtil, pollTicker, fullRunTicker, quickRunQueue, fullRunQueue, errors, ""}
-	webserver := &webserver.WebServer{listenPort, clock, metrics.GetHandler(), fullRunQueue, runResults, errors}
+	scheduler := &run.Scheduler{GitUtil: gitUtil, PollTicker: pollTicker, FullRunTicker: fullRunTicker, QuickRunQueue: quickRunQueue, FullRunQueue: fullRunQueue, Errors: errors, LastCommitHash: ""}
+	webserver := &webserver.WebServer{ListenPort: listenPort, Clock: clock, MetricsHandler: metrics.GetHandler(), FullRunQueue: fullRunQueue, RunResults: runResults, Errors: errors}
 
 	go metrics.StartMetricsLoop()
 	go scheduler.Start()
