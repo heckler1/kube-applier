@@ -1,10 +1,12 @@
 package metrics
 
 import (
-	"github.com/box/kube-applier/run"
-	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
 	"strconv"
+
+	"github.com/box/kube-applier/run"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Prometheus implements instrumentation of metrics for kube-applier.
@@ -18,7 +20,7 @@ type Prometheus struct {
 
 // GetHandler returns a handler for exposing Prometheus metrics via HTTP.
 func (p *Prometheus) GetHandler() http.Handler {
-	return prometheus.UninstrumentedHandler()
+	return promhttp.Handler()
 }
 
 // Configure creates and registers the custom metrics for kube-applier, and starts a loop to receive run results.
