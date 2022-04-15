@@ -57,7 +57,10 @@ func main() {
 	}
 	kubeClient.Configure()
 
-	gitUtil := &git.GitUtil{RepoPath: repoPath}
+	gitUtil, err := git.NewGitUtil(repoPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 	fileSystem := &sysutil.FileSystem{}
 	listFactory := &applylist.Factory{RepoPath: repoPath, BlacklistPath: blacklistPath, WhitelistPath: whitelistPath, FileSystem: fileSystem}
 
