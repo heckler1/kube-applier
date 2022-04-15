@@ -2,13 +2,14 @@ package run
 
 import (
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/box/kube-applier/applylist"
 	"github.com/box/kube-applier/git"
 	"github.com/box/kube-applier/sysutil"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 type testCase struct {

@@ -1,10 +1,11 @@
 package run
 
 import (
+	"log"
+
 	"github.com/box/kube-applier/applylist"
 	"github.com/box/kube-applier/git"
 	"github.com/box/kube-applier/sysutil"
-	"log"
 )
 
 // Runner manages the full process of an apply run, including getting the appropriate files, running apply commands on them, and handling the results.

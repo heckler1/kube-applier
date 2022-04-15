@@ -1,0 +1,59 @@
+output:
+  format: tab
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - unused
+    - gosimple
+    - structcheck
+    - varcheck
+    - golint
+    - ineffassign
+    - deadcode
+    - typecheck
+    - errcheck
+    - bodyclose
+    - stylecheck
+    - gosec
+    - unconvert
+    - goconst
+    - goimports
+    - misspell
+    - unparam
+    - dogsled
+    - nakedret
+    - scopelint
+    - gocritic
+    - godox
+    - goprintffuncname
+linters-settings:
+  errcheck:
+    exclude: .errcheckignore
+  gocritic:
+    enabled-tags:
+    - diagnostic
+    - experimental
+    - opinionated
+    - performance
+    - style
+    disabled-checks:
+    - commentFormatting
+    - exitAfterDefer
+    - hugeParam
+    - ifElseChain
+    - rangeValCopy
+    - unnecessaryBlock
+  misspell:
+    locale: US
+    ignore-words:
+      - clas
+  godox:
+    keywords:
+      - HACK
+      - XXX
